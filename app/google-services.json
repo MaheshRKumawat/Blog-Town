@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "911836440633",
+    "project_id": "blogtown-3f55b",
+    "storage_bucket": "blogtown-3f55b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911836440633:android:a50e3937b225052caa05e8",
+        "android_client_info": {
+          "package_name": "com.example.blogtown"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "911836440633-fhgsbool0ofji5t9lpmd3iv4ufpsacpj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFCFQvnNHE85Wz9KuVd3BJfPOT0c7CqT0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "911836440633-fhgsbool0ofji5t9lpmd3iv4ufpsacpj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

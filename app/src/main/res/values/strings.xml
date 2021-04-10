@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">BlogTown</string>
+    <string name="action_settings_text">Settings</string>
+    <string name="action_logout_text">Logout</string>
+</resources>
