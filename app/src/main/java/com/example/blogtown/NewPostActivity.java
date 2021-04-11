@@ -30,9 +30,12 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 public class NewPostActivity extends AppCompatActivity {
 
+    private static final int MAX_LENGTH = 100;
     private Toolbar newPostToolbar;
     private ImageView newPostImage;
     private EditText newPostDesc;
@@ -80,7 +83,7 @@ public class NewPostActivity extends AppCompatActivity {
                 String desc= newPostDesc.getText().toString();
                 if(!TextUtils.isEmpty(desc) && postImageUri!=null){
                     newPostProgress.setVisibility(View.VISIBLE);
-                    String randomName = FieldValue.serverTimestamp().toString();
+                    String randomName = UUID.randomUUID().toString();
                     StorageReference filePath = storageReference.child("post_images").child(randomName + ".jpg");
                     filePath.putFile(postImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
