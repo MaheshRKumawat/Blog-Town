@@ -2,7 +2,7 @@ package com.example.blogtown;
 
 import java.sql.Timestamp;
 
-public class BlogPost {
+public class BlogPost extends BlogPostId{
     public String user_id;
     public String image_uri;
     public String desc;

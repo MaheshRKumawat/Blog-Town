@@ -8,14 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,23 +77,28 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         blog_list = new ArrayList<>();
-        blog_list_view = (RecyclerView) getActivity().findViewById(R.id.blog_list_view);
+        blog_list_view = (RecyclerView) view.findViewById(R.id.blog_list_view);
         firebaseFirestore = FirebaseFirestore.getInstance();
-        blogRecyclerAdapter = new BlogRecyclerAdapter(blog_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        blog_list_view.setLayoutManager(layoutManager);
+//        blogRecyclerAdapter = new BlogRecyclerAdapter(blog_list);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        blog_list_view.setLayoutManager(new LinearLayoutManager(getActivity()));
         blog_list_view.setAdapter(blogRecyclerAdapter);
 
-        firebaseFirestore.collection("Posts").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        Query firstQuery = firebaseFirestore.collection("Posts").orderBy("timeStamp", Query.Direction.DESCENDING);
+
+        firstQuery.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 for(DocumentChange doc: value.getDocumentChanges()){
                     if(doc.getType() == DocumentChange.Type.ADDED){
-                        BlogPost blogPost = doc.getDocument().toObject(BlogPost.class);
+                        String blogPostId = doc.getDocument().getId();
+                        BlogPost blogPost = doc.getDocument().toObject(BlogPost.class).withId(blogPostId);
                         blog_list.add(blogPost);
-                        blogRecyclerAdapter.notifyDataSetChanged();
-                        String someText = blogPost.getDesc();
-                        Toast.makeText(getActivity(), "It's working : "+ someText, Toast.LENGTH_LONG).show();
+                        blogRecyclerAdapter = new BlogRecyclerAdapter(blog_list);
+                        blog_list_view.setAdapter(blogRecyclerAdapter);
+//                        blogRecyclerAdapter.notifyDataSetChanged();
+//                        String someText = blogPost.getDesc();
+//                        Toast.makeText(getActivity(), "It's working : "+ someText, Toast.LENGTH_LONG).show();
                     }
                 }
             }
