@@ -1,6 +1,7 @@
 package com.example.blogtown;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,6 +128,15 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
             }
         });
 
+        holder.blogCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent commentIntent = new Intent(context, CommentsActivity.class);
+                commentIntent.putExtra("blog_post_id", blogPostId);
+                context.startActivity(commentIntent);
+            }
+        });
+
     }
 
     @Override
@@ -144,11 +154,13 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         private ImageView blogUserImage;
         private ImageView blogLikeBtn;
         private TextView blogLikeCount;
+        private ImageView blogCommentBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
             blogLikeBtn = mView.findViewById(R.id.blog_like_btn);
+            blogCommentBtn = mView.findViewById(R.id.blog_comment_btn);
         }
 
         public void setDescText(String descText){

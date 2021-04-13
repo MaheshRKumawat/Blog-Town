@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -89,23 +90,28 @@ public class NewPostActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                             if(task.isSuccessful()){
-                                String downloadUri = task.getResult().getUploadSessionUri().toString();
+//                                String downloadUri = task.getResult().getUploadSessionUri().toString();
                                 Map<String,Object> postMap = new HashMap<>();
-                                postMap.put("image_uri", downloadUri);
-                                postMap.put("desc",desc);
-                                postMap.put("user_id", current_user_id);
-                                postMap.put("timeStamp", FieldValue.serverTimestamp());
-
-                                firebaseFirestore.collection("Posts").add(postMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                                        if(task.isSuccessful()){
-                                            Toast.makeText(NewPostActivity.this, "Post was added", Toast.LENGTH_SHORT).show();
-                                            Intent mainIntent = new Intent(NewPostActivity.this, MainActivity.class);
-                                            startActivity(mainIntent);
-                                            finish();
-                                        }
-                                        newPostProgress.setVisibility(View.INVISIBLE);
+                                    public void onSuccess(Uri uri) {
+                                        postMap.put("image_uri", uri.toString());
+                                        postMap.put("desc",desc);
+                                        postMap.put("user_id", current_user_id);
+                                        postMap.put("timeStamp", FieldValue.serverTimestamp());
+
+                                        firebaseFirestore.collection("Posts").add(postMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                if(task.isSuccessful()){
+                                                    Toast.makeText(NewPostActivity.this, "Post was added", Toast.LENGTH_SHORT).show();
+                                                    Intent mainIntent = new Intent(NewPostActivity.this, MainActivity.class);
+                                                    startActivity(mainIntent);
+                                                    finish();
+                                                }
+                                                newPostProgress.setVisibility(View.INVISIBLE);
+                                            }
+                                        });
                                     }
                                 });
                             }else{

@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -123,7 +124,7 @@ public class Profile_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String username = profile_name.getText().toString();
-                if (!TextUtils.isEmpty(username)) {
+                if (!TextUtils.isEmpty(username) && mainImageURI!=null) {
                     profile_progressBar.setVisibility(View.VISIBLE);
                     if (isChanged) {
                         StorageReference image_path = storageReference.child("Profile_Images").child(user_id + ".jpg");
@@ -131,7 +132,12 @@ public class Profile_Activity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    storeFirestore(task, username);
+                                    image_path.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            storeFirestore(task, username, uri);
+                                        }
+                                    });
                                 } else {
                                     String errorMessage = task.getException().getMessage();
                                     Toast.makeText(Profile_Activity.this, "Image Error: " + errorMessage, Toast.LENGTH_LONG).show();
@@ -140,20 +146,20 @@ public class Profile_Activity extends AppCompatActivity {
                             }
                         });
                     } else {
-                        storeFirestore(null, username);
+                        storeFirestore(null, username, mainImageURI);
                     }
                 }
             }
         });
     }
 
-    private void storeFirestore(@NonNull Task<UploadTask.TaskSnapshot> task, String username) {
-        Uri download_uri;
-        if(task!=null){
-            download_uri = task.getResult().getUploadSessionUri();
-        }else{
-            download_uri = mainImageURI;
-        }
+    private void storeFirestore(@NonNull Task<UploadTask.TaskSnapshot> task, String username, Uri download_uri) {
+//        if(task!=null){
+//            download_uri = task.getResult().getDownloadUri();
+////            download_uri = task.getResult().getUploadSessionUri();
+//        }else{
+//            download_uri = mainImageURI;
+//        }
         Map<String,String> userMap = new HashMap<>();
         userMap.put("name", username);
         userMap.put("image",download_uri.toString());

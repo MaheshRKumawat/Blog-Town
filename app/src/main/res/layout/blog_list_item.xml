@@ -102,6 +102,30 @@
                 app:layout_constraintStart_toEndOf="@+id/blog_like_btn"
                 app:layout_constraintTop_toBottomOf="@+id/blog_desc" />
 
+            <ImageView
+                android:id="@+id/blog_comment_btn"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="150dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/blog_like_count"
+                app:layout_constraintTop_toBottomOf="@+id/blog_desc"
+                app:layout_constraintVertical_bias="0.666"
+                app:srcCompat="@drawable/outline_chat_black_24dp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto"
+                android:text="Comments"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/blog_comment_btn"
+                app:layout_constraintTop_toBottomOf="@+id/blog_desc" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
