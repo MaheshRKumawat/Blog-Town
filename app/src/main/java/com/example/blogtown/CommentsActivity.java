@@ -71,7 +71,6 @@ public class CommentsActivity extends AppCompatActivity {
                             commentsList.add(comments);
                             commentsRecyclerAdapter = new CommentsRecyclerAdapter(commentsList);
                             commentsRecyclerAdapter.notifyDataSetChanged();
-//                            Toast.makeText(CommentsActivity.this, "hello", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

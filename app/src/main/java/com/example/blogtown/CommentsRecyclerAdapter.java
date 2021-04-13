@@ -9,12 +9,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.List;
 
 public class CommentsRecyclerAdapter extends RecyclerView.Adapter<CommentsRecyclerAdapter.ViewHolder> {
 
     public List<Comments> commentsList;
     public Context context;
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
 
     public CommentsRecyclerAdapter(List<Comments> commentsList){
         this.commentsList = commentsList;
@@ -25,11 +30,14 @@ public class CommentsRecyclerAdapter extends RecyclerView.Adapter<CommentsRecycl
     public CommentsRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_list_item, parent, false);
         context = parent.getContext();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         return new CommentsRecyclerAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String currentUserId = firebaseAuth.getCurrentUser().getUid();
         String commentMessage = commentsList.get(position).getMessage();
         holder.setComment_message(commentMessage);
     }
