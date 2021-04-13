@@ -99,6 +99,5 @@ public class CommentsActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 }
