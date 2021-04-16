@@ -90,7 +90,6 @@ public class NewPostActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                             if(task.isSuccessful()){
-//                                String downloadUri = task.getResult().getUploadSessionUri().toString();
                                 Map<String,Object> postMap = new HashMap<>();
                                 filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
@@ -121,6 +120,8 @@ public class NewPostActivity extends AppCompatActivity {
                             }
                         }
                     });
+                }else{
+                    Toast.makeText(NewPostActivity.this, "Enter both the image and text", Toast.LENGTH_LONG).show();
                 }
             }
         });

@@ -79,8 +79,6 @@ public class HomeFragment extends Fragment {
         blog_list = new ArrayList<>();
         blog_list_view = (RecyclerView) view.findViewById(R.id.blog_list_view);
         firebaseFirestore = FirebaseFirestore.getInstance();
-//        blogRecyclerAdapter = new BlogRecyclerAdapter(blog_list);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         blog_list_view.setLayoutManager(new LinearLayoutManager(getActivity()));
         blog_list_view.setAdapter(blogRecyclerAdapter);
 
@@ -96,9 +94,6 @@ public class HomeFragment extends Fragment {
                         blog_list.add(blogPost);
                         blogRecyclerAdapter = new BlogRecyclerAdapter(blog_list);
                         blog_list_view.setAdapter(blogRecyclerAdapter);
-//                        blogRecyclerAdapter.notifyDataSetChanged();
-//                        String someText = blogPost.getDesc();
-//                        Toast.makeText(getActivity(), "It's working : "+ someText, Toast.LENGTH_LONG).show();
                     }
                 }
             }

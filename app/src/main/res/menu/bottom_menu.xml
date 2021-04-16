@@ -7,11 +7,11 @@
         android:icon="@drawable/outline_home_black_24dp"
         android:title="Home" />
     <item
-        android:id="@+id/bottom_action_notifications"
-        android:icon="@drawable/outline_notifications_black_24dp"
-        android:title="Notifications" />
-    <item
         android:id="@+id/bottom_action_account"
         android:icon="@drawable/outline_person_black_24dp"
         android:title="Account" />
+    <item
+        android:id="@+id/bottom_action_settings"
+        android:icon="@drawable/outline_settings_black_24dp"
+        android:title="Settings" />
 </menu>

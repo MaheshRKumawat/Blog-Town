@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -84,8 +85,13 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         });
 
         Timestamp timeStamp = blog_list.get(position).getTimestamp();
+//        if(timeStamp == null){
+//            Toast.makeText(context, "timestamp null" , Toast.LENGTH_SHORT).show();
+//        }else{
+//            Toast.makeText(context, "timestamp not null" , Toast.LENGTH_SHORT).show();
+//        }
 //        String dateString = DateFormat.format("MM/dd/yyy", new Date(millisecond)).toString();
-
+//        String someText = timeStamp.toString();
 //        Date date=new Date(timeStamp.getTime());
 //        long millisecond = timeStamp.getTime();
 //        String dateString = new SimpleDateFormat("MM/dd/yyyy").format(new Date(millisecond));
@@ -100,6 +106,18 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
                     holder.updateLikesCount(count);
                 }else{
                     holder.updateLikesCount(0);
+                }
+            }
+        });
+
+        firebaseFirestore.collection("Posts/"+blogPostId+"/Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(!value.isEmpty()){
+                    int count = value.size();
+                    holder.updateCommentsCount(count);
+                }else{
+                    holder.updateCommentsCount(0);
                 }
             }
         });
@@ -175,6 +193,7 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         private TextView blogLikeCount;
         private ImageView blogCommentBtn;
         private Button blogDeleteBtn;
+        private TextView blogCommentsCount;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -213,6 +232,11 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         public void updateLikesCount(int count){
             blogLikeCount = mView.findViewById(R.id.blog_like_count);
             blogLikeCount.setText(count+" Likes");
+        }
+
+        public void updateCommentsCount(int count){
+            blogCommentsCount = mView.findViewById(R.id.blog_comment_count);
+            blogCommentsCount.setText(count+" Comments");
         }
     }
 }

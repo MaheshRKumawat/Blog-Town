@@ -90,9 +90,10 @@ public class CommentsActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if(!task.isSuccessful()){
-                                Toast.makeText(CommentsActivity.this, "Error posting the comment: "+task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(CommentsActivity.this, "Error posting the comment: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }else{
                                 comment_field.setText("");
+                                Toast.makeText(CommentsActivity.this, "Comment posted", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

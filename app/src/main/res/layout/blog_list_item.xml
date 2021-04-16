@@ -53,6 +53,7 @@
                 android:fontFamily="@font/roboto"
                 android:text="Blog Post Date"
                 android:textSize="18sp"
+                android:visibility="invisible"
                 app:layout_constraintStart_toEndOf="@+id/blog_user_image"
                 app:layout_constraintTop_toBottomOf="@+id/blog_user_name" />
 

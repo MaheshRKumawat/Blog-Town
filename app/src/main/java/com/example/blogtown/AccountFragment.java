@@ -2,11 +2,25 @@ package com.example.blogtown;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +37,12 @@ public class AccountFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView blog_list_view;
+    private List<BlogPost> blog_list;
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
+    private BlogRecyclerAdapter blogRecyclerAdapter;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -59,6 +79,34 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false);
+        View view = inflater.inflate(R.layout.fragment_account, container, false);
+
+        blog_list = new ArrayList<>();
+        blog_list_view = (RecyclerView) view.findViewById(R.id.blog_list_view);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        blog_list_view.setLayoutManager(new LinearLayoutManager(getActivity()));
+        blog_list_view.setAdapter(blogRecyclerAdapter);
+
+        String currentUserId = firebaseAuth.getCurrentUser().getUid();
+
+        Query firstQuery = firebaseFirestore.collection("Posts").whereEqualTo("user_id",currentUserId);
+
+        firstQuery.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                for(DocumentChange doc: value.getDocumentChanges()){
+                    if(doc.getType() == DocumentChange.Type.ADDED){
+                        String blogPostId = doc.getDocument().getId();
+                        BlogPost blogPost = doc.getDocument().toObject(BlogPost.class).withId(blogPostId);
+                        blog_list.add(blogPost);
+                        blogRecyclerAdapter = new BlogRecyclerAdapter(blog_list);
+                        blog_list_view.setAdapter(blogRecyclerAdapter);
+                    }
+                }
+            }
+        });
+
+        return view;
     }
 }

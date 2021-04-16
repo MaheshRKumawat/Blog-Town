@@ -63,11 +63,12 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.bottom_action_home:
                             replaceFragment(homeFragment);
                             return true;
-                        case R.id.bottom_action_notifications:
-                            replaceFragment(notificationFragment);
-                            return true;
                         case R.id.bottom_action_account:
                             replaceFragment(accountFragment);
+                            return true;
+                        case R.id.bottom_action_settings:
+                            Intent settingsIntent = new Intent(MainActivity.this, Profile_Activity.class);
+                            startActivity(settingsIntent);
                             return true;
                         default:
                             return false;
@@ -136,9 +137,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_logout_btn:
                 logout();
                 return true;
-            case R.id.action_settings_btn:
-                Intent settingsIntent = new Intent(MainActivity.this, Profile_Activity.class);
-                startActivity(settingsIntent);
             default:
                 return false;
         }
